@@ -15,8 +15,9 @@ Point::Point()
 {
 }
 
-Point::Point(float x, float y)
+Point::Point(long long id, float x, float y)
 {
+    this->id = id;
     this->x = x;
     this->y = y;
 }
@@ -67,7 +68,7 @@ vector<Point> Point::get_inserted_points(long long num)
     {
         float x = (float)(rand() % num) / num;
         float y = (float)(rand() % num) / num;
-        Point point(x, y);
+        Point point(0, x, y);
         points.push_back(point);
     }
     return points;

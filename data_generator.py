@@ -6,12 +6,10 @@ import os
 
 import random
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn import preprocessing
-import matplotlib.patches as patches
-from matplotlib.ticker import MultipleLocator
 import configparser
 import tensorflow as tf
+tf.compat.v1.disable_eager_execution()
 import time
 
 curPath = os.path.abspath(os.path.dirname(__file__))
@@ -46,7 +44,7 @@ def getNormalPoints(num, filename, dim):
     locations_tf = []
     for i in range(dim):
         # locations_tf.append(tf.random.truncated_normal([num * 2, 1], mean=0.5, stddev=0.125, dtype=tf.float32))
-        locations_tf.append(tf.random_normal([num * 2, 1], mean=0.5, stddev=0.125, dtype=tf.float32))
+        locations_tf.append(tf.random.normal([num * 2, 1], mean=0.5, stddev=0.125, dtype=tf.float32))
     with tf.compat.v1.Session() as sees:
         locations = []
         for i in range(dim):

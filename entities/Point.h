@@ -14,12 +14,13 @@ public:
     float y;
     long long x_i;
     long long y_i;
+    long long id;
     long long curve_val;
     float normalized_curve_val;
 
     float temp_dist = 0.0;
 
-    Point(float, float);
+    Point(long long, float, float);
     Point();
     bool operator == (const Point& point);
     float cal_dist(Point);

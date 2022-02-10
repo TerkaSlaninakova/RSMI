@@ -4,6 +4,7 @@
 #include <iterator>
 #include <string>
 #include <algorithm>
+#include <map>
 // #include <boost/algorithm/string.hpp>
 using namespace std;
 # include "../entities/Point.h"
@@ -22,6 +23,7 @@ public:
     vector<Mbr> get_mbrs();
     vector<Point> get_points(string filename, string delimeter);
     vector<Mbr> get_mbrs(string filename, string delimeter);
+    map<long long int, long long int> get_precomputed_hilbert(string hilbert_filename);
 };
 
 #endif

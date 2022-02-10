@@ -123,7 +123,6 @@ void RSMI::build(ExpRecorder &exp_recorder, vector<Point> points)
         {
             points[i].y_i = i;
             long long curve_val = compute_Hilbert_value(points[i].x_i, points[i].y_i, side);
-            points[i].curve_val = curve_val;
         }
         sort(points.begin(), points.end(), sort_curve_val());
         width = N - 1;
@@ -192,7 +191,7 @@ void RSMI::build(ExpRecorder &exp_recorder, vector<Point> points)
         for (int i = 0; i < N; i++)
         {
             Point point = points[i];
-            int predicted_index = (int)(net->predict(point) * leaf_node_num);
+            int predicted_index = (int)(net->predict(point) * leaf_node_num); // what's the pred. output of the model?
             predicted_index = predicted_index < 0 ? 0 : predicted_index;
             predicted_index = predicted_index >= leaf_node_num ? leaf_node_num - 1 : predicted_index;
 
@@ -215,10 +214,14 @@ void RSMI::build(ExpRecorder &exp_recorder, vector<Point> points)
         }
         exp_recorder.average_max_error += max_error;
         exp_recorder.average_min_error += min_error;
+        //cout << "exp diff:" << exp_recorder.max_error - exp_recorder.min_error << endl;
+        //cout << "max min diff:" << max_error - min_error << endl;
         if ((max_error - min_error) > (exp_recorder.max_error - exp_recorder.min_error))
         {
             exp_recorder.max_error = max_error;
             exp_recorder.min_error = min_error;
+            //cout << "min error:" << exp_recorder.min_error << endl;
+            //cout << "max error:" << exp_recorder.max_error << endl;
         }
 
     }

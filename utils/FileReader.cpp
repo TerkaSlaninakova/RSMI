@@ -7,7 +7,7 @@
 #include <iterator>
 #include <string>
 #include <algorithm>
-
+#include <map>
 // #include "../entities/Point.cpp"
 #include "../entities/Mbr.h"
 using namespace std;
@@ -53,20 +53,44 @@ vector<Point> FileReader::get_points()
     ifstream file(filename);
     vector<Point> points;
     string line = "";
+    long long counter = 0;
     while (getline(file, line))
     {
         vector<string> vec;
         boost::algorithm::split(vec, line, boost::is_any_of(delimeter));
         if (vec.size() > 1)
         {
-            Point point(stod(vec[0]), stod(vec[1]));
+            Point point(counter, stod(vec[0]), stod(vec[1]));
             points.push_back(point);
         }
+        counter++;
     }
     // Close the File
     file.close();
 
     return points;
+}
+
+map<long long int, long long int> FileReader::get_precomputed_hilbert(string hilbert_filename)
+{
+    ifstream file(hilbert_filename);
+    map<long long int, long long int> hilbert_values {{-1, -1}};
+    string line = "";
+    while (getline(file, line))
+    {
+        vector<string> vec;
+        boost::algorithm::split(vec, line, boost::is_any_of(" "));
+        if (vec.size() > 1)
+        {
+            long long int hilbert_value = stod(vec[1]);
+            long long int index = stod(vec[0]);
+            hilbert_values[index] = hilbert_value;
+        }
+    }
+    // Close the File
+    file.close();
+
+    return hilbert_values;
 }
 
 vector<Mbr> FileReader::get_mbrs()
@@ -96,12 +120,14 @@ vector<Point> FileReader::get_points(string filename, string delimeter)
     vector<Point> points;
 
     string line = "";
+    long long counter = 0;
     while (getline(file, line))
     {
         vector<string> vec;
         boost::algorithm::split(vec, line, boost::is_any_of(delimeter));
-        Point point(stod(vec[0]), stod(vec[1]));
+        Point point(counter, stod(vec[0]), stod(vec[1]));
         points.push_back(point);
+        counter++;
     }
     // Close the File
     file.close();

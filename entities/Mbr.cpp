@@ -190,10 +190,10 @@ void Mbr::print()
 vector<Point> Mbr::get_corner_points()
 {
     vector<Point> result;
-    Point point1(x1, y1);
-    Point point2(x2, y1);
-    Point point3(x1, y2);
-    Point point4(x2, y2);
+    Point point1(0, x1, y1);
+    Point point2(0, x2, y1);
+    Point point3(0, x1, y2);
+    Point point4(0, x2, y2);
     result.push_back(point1);
     result.push_back(point2);
     result.push_back(point3);

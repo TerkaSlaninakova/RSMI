@@ -22,7 +22,7 @@
 using namespace std;
 
 #ifndef use_gpu
-// #define use_gpu
+#define use_gpu
 
 int ks[] = {1, 5, 25, 125, 625};
 float areas[] = {0.000006, 0.000025, 0.0001, 0.0004, 0.0016};
@@ -114,12 +114,14 @@ void exp_RSMI(FileWriter file_writer, ExpRecorder exp_recorder, vector<Point> po
     partition->point_query(exp_recorder, points);
     cout << "finish point_query: pageaccess:" << exp_recorder.page_access << endl;
     cout << "finish point_query time: " << exp_recorder.time << endl;
+    cout << "min error:" << exp_recorder.min_error << " max error:" << exp_recorder.max_error << endl;
     exp_recorder.clean();
 }
 
 string RSMI::model_path_root = "";
 int main(int argc, char **argv)
 {
+    cout << "Starting the experiment run" << endl;
     int c;
     static struct option long_options[] =
     {
@@ -157,16 +159,21 @@ int main(int argc, char **argv)
     exp_recorder.skewness = skewness;
     inserted_num = cardinality / 2;
 
-    // TODO change filename
     string dataset_filename = Constants::DATASETS + exp_recorder.distribution + "_" + to_string(exp_recorder.dataset_cardinality) + "_" + to_string(exp_recorder.skewness) + "_2_.csv";
     FileReader filereader(dataset_filename, ",");
     vector<Point> points = filereader.get_points();
+    assert(("Checking that the loaded data size is > 0", points.size() > 0));
     exp_recorder.insert_num = inserted_num;
     vector<Point> query_poitns;
     vector<Point> insert_points;
+    cout << "Loaded the data from dataset_filename: " << dataset_filename << endl;
+    cout << "First Point: " << endl;
+    points[0].print();
+    exp_recorder.structure_name = "RSMI";
     //***********************write query data*********************
     FileWriter query_file_writer(Constants::QUERYPROFILES);
     query_poitns = Point::get_points(points, query_k_num);
+    cout << "Loaded the query data, QUERYPROFILES: " << Constants::QUERYPROFILES << endl;
     query_file_writer.write_points(query_poitns, exp_recorder);
     insert_points = Point::get_inserted_points(exp_recorder.insert_num);
     query_file_writer.write_inserted_points(insert_points, exp_recorder);
